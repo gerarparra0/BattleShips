@@ -33,8 +33,8 @@ public class Game {
     private int playerTotalShots;
     private int AITotalShots;
     private char[][] dummy;
-    private boolean playerFlag = false;
-    private boolean AIFlag = false;
+    private boolean playerZero = false;
+    private boolean AIZero = false;
 
     public Game() {
         AI = new Board(new int[]{8, 10});
@@ -51,6 +51,7 @@ public class Game {
 
     }
 
+    //calculates total shots required to win
     public void setPlayerTotalShots() {
         for (int i = AI.getShipAmt(); i > 0; i--) {
             playerTotalShots += i;
@@ -64,19 +65,31 @@ public class Game {
         }
     }
 
-    //to decrease and bool to check for win
+    //will decrease and Flags will = true when total shots = 0
     public void decreasePlayerTotalShots() {
-        if (playerTotalShots == 1) {
-            AIFlag = true;
-        }
-        playerTotalShots--;
+
+        --playerTotalShots;
+    }
+    public int getPlayerTotalShots()
+    {
+        return playerTotalShots;
+    }
+    public int getAITotalShots()
+    {
+        return AITotalShots;
     }
 
-    public void decreaseAIPlayerTotalShots() {
-        if (AITotalShots == 1) {
-            playerFlag = true;
-        }
-        AITotalShots--;
+    public void decreaseAITotalShots() {
+
+        --AITotalShots;
+    }
+
+    public boolean getAIZero() {
+        return AIZero;
+    }
+
+    public boolean getPlayerZero() {
+        return playerZero;
     }
 
     public void printDummy() {
@@ -123,8 +136,10 @@ public class Game {
                 try {
                     if (result) {
                         dummy[pos[1]][pos[0]] = Ship.SHOT;
+                        return true;
                     } else {
                         dummy[pos[1]][pos[0]] = 'M';
+                        
                     }
                 } catch (ArrayIndexOutOfBoundsException e) {
                     System.out.println("Invalid coordinate");
@@ -150,6 +165,8 @@ public class Game {
             res = sc.next();
             res = res.toLowerCase();
             actualBoard = t;
+            setPlayerTotalShots();
+            setAIToalShots();
         }
 
         return actualBoard;
@@ -174,35 +191,24 @@ public class Game {
         Player = keepBoard(sc);
 
         while (true) {
-            drawBoards();
-
-            // ...
-            if (playerFlag) {
-                System.out.println("You've lost.");
-                break;
-            }
-            if (AIFlag) {
-                System.out.println("You've won");
-                break;
-
-            }
-
             if (IS_PLAYERS_TURN) {
+                drawBoards();
                 boolean t = getCoordinatesAndShoot(sc);
 
                 if (t) {
-                    decreaseAIPlayerTotalShots();
-                    // do whatever to the dummy
-
+                    System.out.println("You Hit the AI!");
+                    decreaseAITotalShots();
+                    
                 } else {
-                    System.out.println("Missed.");
+                    System.out.println("You Missed.");
                 }
 
                 IS_PLAYERS_TURN = false;
             } else {
                 boolean t = COM.easy(Player);
                 if (t) {
-                    System.out.println("AI hit!");
+                    System.out.println("AI hit your ship!");
+                    decreasePlayerTotalShots();
                     Player = COM.getBoard();
                 } else {
                     System.out.println("AI missed.");
@@ -211,6 +217,19 @@ public class Game {
                 IS_PLAYERS_TURN = true;
             }
 
+           if(getAITotalShots()== 0)
+            {
+                drawBoards();
+                System.out.println("You've won!");
+                break;
+            } else if(getPlayerTotalShots() == 0)
+            {   drawBoards();
+                System.out.println("You've lost");
+                break;
+                
+            }
+             System.out.println(getAITotalShots());
+             System.out.println(getPlayerTotalShots());
         }
     }
 
