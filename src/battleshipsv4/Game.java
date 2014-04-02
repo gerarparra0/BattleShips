@@ -20,19 +20,21 @@ public class Game {
     // handle errors
     private boolean IS_PLAYERS_TURN = true;
     // turn = true for player, false for AI
-    
+
     // ** not sure if we need this ** 
     //private boolean turn = IS_PLAYERS_TURN;
-    
     private Board AI;
     private Board Player;
-    
+
     private AI COM;
     private Ship ships;
     private String playerName;
     private boolean askedForName = false;
-    
+    private int playerTotalShots;
+    private int AITotalShots;
     private char[][] dummy;
+    private boolean playerFlag = false;
+    private boolean AIFlag = false;
 
     public Game() {
         AI = new Board(new int[]{8, 10});
@@ -48,11 +50,43 @@ public class Game {
 
     }
 
+    public void setPlayerTotalShots() {
+        for (int i = AI.getShipAmt(); i > 0; i--) {
+            playerTotalShots += i;
+        }
+
+    }
+
+    public void setAIToalShots() {
+        for (int i = Player.getShipAmt(); i > 0; i--) {
+            AITotalShots += i;
+        }
+    }
+
+    //to decrease and bool to check for win
+    public boolean decreasePlayerTotalShots() {
+        if (playerTotalShots == 1) {
+            AIFlag = true;
+            return true;
+        }
+        playerTotalShots--;
+        return false;
+    }
+
+    public boolean decreaseAIPlayerTotalShots() {
+        if (AITotalShots == 1) {
+            playerFlag = true;
+            return true;
+        }
+        AITotalShots--;
+        return false;
+    }
+
     public void printDummy() {
         // print board
         for (int r = 0; r < dummy.length; r++) {
             for (int c = 0; c < dummy[0].length; c++) {
-                System.out.println(dummy[r][c] +" ");
+                System.out.println(dummy[r][c] + " ");
             }
             System.out.println();
         }
@@ -66,7 +100,6 @@ public class Game {
 //            turn = ;
 //        }
 //    }
-
     private void askForName(Scanner sc) {
         System.out.println("Enter your name");
         //String word = JOptionPane.showInputDialog("Enter your name");
@@ -96,7 +129,7 @@ public class Game {
                 }
             }
         }
-        
+
         //String word = JOptionPane.showInputDialog("Enter a valid coordinate");
         return false;
     }
@@ -126,32 +159,49 @@ public class Game {
     }
 
     public void run() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Welcome to BattleShip.");
-            if(IS_PLAYERS_TURN)
-            {
+
+        while (true) {
+            Scanner sc = new Scanner(System.in);
+            System.out.println("Welcome to BattleShip.");
+            if (IS_PLAYERS_TURN) {
                 if (playerName == null) {
-                askForName(sc);
-                askedForName = true;
-            } // continue with the logic of the game
-            else {
-                if (askedForName) {
-                    System.out.println("Welcome " + playerName);
-                    Player = keepBoard(sc);
-                }
-            }
-        }
-            while(true)
-            {
-                if(IS_PLAYERS_TURN)
-                {
-                    if(getCoordinatesAndShoot(sc))
-                    {
-                        printDummy();
-                        IS_PLAYERS_TURN = false;
+                    askForName(sc);
+                    askedForName = true;
+                } // continue with the logic of the game
+                else {
+                    if (askedForName) {
+                        System.out.println("Welcome " + playerName);
+                        Player = keepBoard(sc);
                     }
                 }
             }
+            // ...
+
+            if (playerFlag) {
+                System.out.println("You've lost.");
+                break;
+            }
+            if (AIFlag) {
+                System.out.println("You've won");
+                break;
+
+            }
+            if (IS_PLAYERS_TURN) {
+                if (getCoordinatesAndShoot(sc)) {
+                    decreaseAIPlayerTotalShots();
+                    printDummy();
+                    IS_PLAYERS_TURN = false;
+                }
+            } else {
+                boolean t = COM.easy(Player);
+                if (t) {
+                    Player = COM.getBoard();
+                } else {
+                    System.out.println("AI missed.");
+                }
+
+            }
+        }
     }
-    
+
 }

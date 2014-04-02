@@ -16,10 +16,10 @@ public class Board {
     //public static final char WATER = '*';
     private final int ROWS, COLS;
 
-    private final int SHIP_AMT = 7;
+    private final int SHIP_AMT = 4;
     private char[][] board;
     private Ship[] ships;           // 3 ships
-    private final int MAX_SHIP_SIZE = 7;
+    private final int MAX_SHIP_SIZE = 4;
     public final static char WATER = '~';
 
     public Board(int[] size) {
