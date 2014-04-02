@@ -37,6 +37,8 @@ public class Board {
         // randomize and initialize ships
         randomizeShips();
     }
+    
+    public int getShipAmt() {return SHIP_AMT;}
 
     public boolean takeShot(int[] pos) {
 
