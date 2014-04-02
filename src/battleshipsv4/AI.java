@@ -63,7 +63,12 @@ public class AI {
     }
 
     public boolean easy(Board player) {
-        return shoot(player);
+        boolean result = shoot(player);
+        
+        if(result)
+            lastSuccessfulShot = shotsFired.get(shots - 1);
+        
+        return result;
     }
 
     private boolean shoot(Board player) {

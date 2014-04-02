@@ -33,6 +33,7 @@ public class Game {
     public Game() {
         AI = new Board(new int[]{8, 10});
         Player = new Board(new int[]{8, 10});
+        COM = new AI();
         dummy = new char[AI.getRows()][AI.getCols()];
 
         // initialize dummy
@@ -48,7 +49,7 @@ public class Game {
         // print board
         for (int r = 0; r < dummy.length; r++) {
             for (int c = 0; c < dummy[0].length; c++) {
-                System.out.println(dummy[r][c] +" ");
+                System.out.println(dummy[r][c] + " ");
             }
             System.out.println();
         }
@@ -92,7 +93,7 @@ public class Game {
                 }
             }
         }
-        
+
         //String word = JOptionPane.showInputDialog("Enter a valid coordinate");
         return false;
     }
@@ -141,9 +142,7 @@ public class Game {
                 }
                 askedForName = false;       // do not repeat again
 
-
                 // first turn is the player
-
                 int playerScore = 0;
                 int aiScore = 0;
 
@@ -197,9 +196,7 @@ public class Game {
                     // CPU's turn
                     // inform the user if the CPU missed or hit
                     // update boards 
-
                 }
-
             }
         }
     }
