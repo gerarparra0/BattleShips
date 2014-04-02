@@ -42,32 +42,44 @@ public class AI {
 
     //private boolean isPositionBounded(int[] pos)
     public boolean hard(Board player) {
-        currentBoard = player;
-        // if the shot was successful
-        // the next turn, the AI is going to 
-        // try horizontally and vertically
+        Random rand = new Random();
+        int num = rand.nextInt(10);
 
-        if (lastShotSuccessful) {
-            return true;
-        } else {
-            boolean result = shoot(currentBoard);
+        boolean result = shoot(player);
 
-            if (result) {
-                lastSuccessfulShot = shotsFired.get(--shots);
-                lastShotSuccessful = true;
-                return true;
-            } else {
-                return false;
+        if (num == 8) {
+            while (!result) {
+                result = shoot(currentBoard);
             }
         }
+
+        return result;
+    }
+
+    // insane AI --- Warning, only expert players
+    // will only miss up to four times
+    public boolean insane(Board player) {
+        Random rand = new Random();
+        int num = rand.nextInt(4);
+
+        boolean result = shoot(player);
+
+        if (num == 3) {
+            while (!result) {
+                result = shoot(currentBoard);
+            }
+        }
+
+        return result;
     }
 
     public boolean easy(Board player) {
         boolean result = shoot(player);
-        
-        if(result)
+
+        if (result) {
             lastSuccessfulShot = shotsFired.get(shots - 1);
-        
+        }
+
         return result;
     }
 
@@ -112,6 +124,6 @@ public class AI {
     }
 
     public int[] getLastSuccessfulShot() {
-        return new int[] {lastSuccessfulShot[0], lastSuccessfulShot[1]};
+        return new int[]{lastSuccessfulShot[0], lastSuccessfulShot[1]};
     }
 }
