@@ -40,6 +40,7 @@ public class Game {
         AI = new Board(new int[]{8, 10});
         Player = new Board(new int[]{8, 10});
         dummy = new char[AI.getRows()][AI.getCols()];
+        COM = new AI();
 
         // initialize dummy
         for (int i = 0; i < dummy.length; i++) {
@@ -64,29 +65,25 @@ public class Game {
     }
 
     //to decrease and bool to check for win
-    public boolean decreasePlayerTotalShots() {
+    public void decreasePlayerTotalShots() {
         if (playerTotalShots == 1) {
             AIFlag = true;
-            return true;
         }
         playerTotalShots--;
-        return false;
     }
 
-    public boolean decreaseAIPlayerTotalShots() {
+    public void decreaseAIPlayerTotalShots() {
         if (AITotalShots == 1) {
             playerFlag = true;
-            return true;
         }
         AITotalShots--;
-        return false;
     }
 
     public void printDummy() {
         // print board
         for (int r = 0; r < dummy.length; r++) {
             for (int c = 0; c < dummy[0].length; c++) {
-                System.out.println(dummy[r][c] + " ");
+                System.out.print(dummy[r][c] + " ");
             }
             System.out.println();
         }
@@ -123,9 +120,15 @@ public class Game {
 
                 int[] pos = {x, y};
                 boolean result = AI.takeShot(pos);
-
-                if (result) {
-                    dummy[pos[1]][pos[0]] = Ship.SHOT;
+                try {
+                    if (result) {
+                        dummy[pos[1]][pos[0]] = Ship.SHOT;
+                    } else {
+                        dummy[pos[1]][pos[0]] = 'M';
+                    }
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    System.out.println("Invalid coordinate");
+                    getCoordinatesAndShoot(sc);
                 }
             }
         }
@@ -160,23 +163,20 @@ public class Game {
 
     public void run() {
 
-        while (true) {
-            Scanner sc = new Scanner(System.in);
-            System.out.println("Welcome to BattleShip.");
-            if (IS_PLAYERS_TURN) {
-                if (playerName == null) {
-                    askForName(sc);
-                    askedForName = true;
-                } // continue with the logic of the game
-                else {
-                    if (askedForName) {
-                        System.out.println("Welcome " + playerName);
-                        Player = keepBoard(sc);
-                    }
-                }
-            }
-            // ...
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Welcome to BattleShip.");
 
+        if (playerName == null) {
+            askForName(sc);
+        } // continue with the logic of the game
+
+        System.out.println("Welcome " + playerName);
+        Player = keepBoard(sc);
+
+        while (true) {
+            drawBoards();
+
+            // ...
             if (playerFlag) {
                 System.out.println("You've lost.");
                 break;
@@ -186,21 +186,31 @@ public class Game {
                 break;
 
             }
+
             if (IS_PLAYERS_TURN) {
-                if (getCoordinatesAndShoot(sc)) {
+                boolean t = getCoordinatesAndShoot(sc);
+
+                if (t) {
                     decreaseAIPlayerTotalShots();
-                    printDummy();
-                    IS_PLAYERS_TURN = false;
+                    // do whatever to the dummy
+
+                } else {
+                    System.out.println("Missed.");
                 }
+
+                IS_PLAYERS_TURN = false;
             } else {
                 boolean t = COM.easy(Player);
                 if (t) {
+                    System.out.println("AI hit!");
                     Player = COM.getBoard();
                 } else {
                     System.out.println("AI missed.");
                 }
 
+                IS_PLAYERS_TURN = true;
             }
+
         }
     }
 
