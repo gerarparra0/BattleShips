@@ -18,22 +18,25 @@ public class Game {
     // implement ai
     // print messages
     // handle errors
-    private final int PLAYER = 0;
-    private final int CPU = 1;
+    private boolean IS_PLAYERS_TURN = true;
+    // turn = true for player, false for AI
+    
+    // ** not sure if we need this ** 
+    //private boolean turn = IS_PLAYERS_TURN;
+    
     private Board AI;
     private Board Player;
-    private Board board;
+    
     private AI COM;
     private Ship ships;
     private String playerName;
     private boolean askedForName = false;
-    private int turn = PLAYER;
+    
     private char[][] dummy;
 
     public Game() {
         AI = new Board(new int[]{8, 10});
         Player = new Board(new int[]{8, 10});
-        COM = new AI();
         dummy = new char[AI.getRows()][AI.getCols()];
 
         // initialize dummy
@@ -49,20 +52,20 @@ public class Game {
         // print board
         for (int r = 0; r < dummy.length; r++) {
             for (int c = 0; c < dummy[0].length; c++) {
-                System.out.println(dummy[r][c] + " ");
+                System.out.println(dummy[r][c] +" ");
             }
             System.out.println();
         }
 
     }
 
-    private void nextTurn() {
-        if (turn == PLAYER) {
-            turn = CPU;
-        } else {
-            turn = PLAYER;
-        }
-    }
+//    private void nextTurn() {
+//        if (turn) {
+//            turn = IS_PLAYERS_TURN;
+//        } else {
+//            turn = ;
+//        }
+//    }
 
     private void askForName(Scanner sc) {
         System.out.println("Enter your name");
@@ -93,7 +96,7 @@ public class Game {
                 }
             }
         }
-
+        
         //String word = JOptionPane.showInputDialog("Enter a valid coordinate");
         return false;
     }
@@ -124,14 +127,10 @@ public class Game {
 
     public void run() {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Welcome to Battleships");
-
-        boolean finished = false;
-
-        while (!finished) {
-
-            // make sure we asked for the name
-            if (playerName == null) {
+        System.out.println("Welcome to BattleShip.");
+            if(IS_PLAYERS_TURN)
+            {
+                if (playerName == null) {
                 askForName(sc);
                 askedForName = true;
             } // continue with the logic of the game
@@ -140,64 +139,19 @@ public class Game {
                     System.out.println("Welcome " + playerName);
                     Player = keepBoard(sc);
                 }
-                askedForName = false;       // do not repeat again
-
-                // first turn is the player
-                int playerScore = 0;
-                int aiScore = 0;
-
-                while (true) {
-                    if (turn == PLAYER) {
-                        System.out.println(playerName + "'s turn");
-
-                        // ask for coordinates to shoot
-                        //coordinates in main
-                        boolean result = getCoordinatesAndShoot(sc);
-
-                        // the shot was successfull, continue
-                        if (result) {
-                            //player coordinates hit ai's ship
-                            //fix scores
-                            playerScore++;
-                            if (playerScore == 3) {
-                                System.out.println(playerName + " wins");
-                                break;
-                            }
-
-                            System.out.println("Great!");
-                            System.out.println("AI's turn, hold on tight!");
-                            nextTurn();
-                        } // if the shot was not successfull, ask for the coordinates again
-                        System.out.println("Missed");
-                        nextTurn();
-                    } else {
-                        System.out.println("AI's turn");
-                        boolean result = COM.easy(Player);
-                        //if ai hits players ship
-                        if (result) {
-                            // update the dummy board with an
-                            // X on the last position shot
-                            int[] lastShot = COM.getLastSuccessfulShot();
-                            Player = COM.getBoard();
-                            System.out.println("AI hits your ship");
-                            dummy[lastShot[1]][lastShot[0]] = Ship.SHOT;
-
-                            aiScore++;
-                            if (aiScore == 3) {
-                                System.out.println("AI wins");
-                                break;
-                            }
-                        } else {
-                            System.out.println("AI missed");
-                            nextTurn();
-                        }
-                    }
-                    // inform the player if he hit or miss and update the board
-                    // CPU's turn
-                    // inform the user if the CPU missed or hit
-                    // update boards 
-                }
             }
         }
+            while(true)
+            {
+                if(IS_PLAYERS_TURN)
+                {
+                    if(getCoordinatesAndShoot(sc))
+                    {
+                        printDummy();
+                        IS_PLAYERS_TURN = false;
+                    }
+                }
+            }
     }
+    
 }
