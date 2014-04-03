@@ -57,7 +57,6 @@ public class Game {
         for (int i = AI.getShipAmt(); i > 0; i--) {
             playerTotalShots += i;
         }
-
     }
 
     /**
