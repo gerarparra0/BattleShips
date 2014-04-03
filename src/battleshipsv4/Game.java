@@ -7,6 +7,9 @@ public class Game {
     // who's turn is it?
     private boolean IS_PLAYERS_TURN;
 
+    // exit flag
+    private boolean EXIT;
+
     // main objects of the game
     private Board AI;
     private Board Player;
@@ -39,7 +42,8 @@ public class Game {
                 dummy[i][j] = Board.WATER;
             }
         }
-        
+
+        EXIT = false;
         IS_PLAYERS_TURN = true;
 
         playerZero = false;
@@ -153,6 +157,11 @@ public class Game {
         System.out.println("Enter the coordinates to shoot");
         //String word = JOptionPane.showInputDialog("Enter the coordinates to shoot");
 
+        if (sc.hasNext("exit")) {
+            EXIT = true;
+            return false;
+        }
+
         if (sc.hasNextInt()) {
             x = sc.nextInt();
 
@@ -234,6 +243,11 @@ public class Game {
             if (IS_PLAYERS_TURN) {
                 drawBoards();
                 boolean t = getCoordinatesAndShoot(sc);
+
+                if (EXIT) {
+                    System.out.println("Thanks for playing. Bye");
+                    break;
+                }
 
                 if (t) {
                     System.out.println("You Hit the AI!");
