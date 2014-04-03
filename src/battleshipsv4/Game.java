@@ -1,15 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package battleshipsv4;
 
 import java.util.Scanner;
 
-/**
- *
- * @author gerardo.parra001
- */
 public class Game {
 
     // who's turn is it?
