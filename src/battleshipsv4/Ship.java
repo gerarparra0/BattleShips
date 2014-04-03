@@ -11,24 +11,18 @@ package battleshipsv4;
  */
 public class Ship {
 
-    // constants to access directions
     public static final boolean VERTICAL = false;
     public static final boolean HORIZONTAL = true;
     public static final char SHOT = 'X';
     public static final char EMPTY = 'O';
 
     private final int ROWS, COLS;
-    private char[][] ship;
     private final int size;
-    private boolean shipSunk = false;
-    //the direction of the ship to be used by
-    // isHorizontal();
-    // true - horizontal
-    // false - vertical
     private final boolean direction;
+    private boolean shipSunk = false;
+    private char[][] ship;
     // position on the board(x - columns, y - rows)
     private final int x, y;
-    // keep track of the ship size
     private int currentShipSize;
 
     public Ship(int sz, boolean dir, int[] pos) {
@@ -39,11 +33,11 @@ public class Ship {
         currentShipSize = size;
 
         //horizontal
-        if (direction == true) {
+        if (direction) {
             ship = new char[1][size];
             ROWS = 1;
             COLS = size;
-        } else {        // vertical
+        } else { // vertical
             ship = new char[size][1];
             ROWS = size;
             COLS = 1;
@@ -55,11 +49,17 @@ public class Ship {
             }
         }
     }
-
+    /**
+     * 
+     * @return boolean Returns true if horizontal; false if vertical.
+     */
     public boolean isHorizontal() {
         return direction == true;
     }
-
+    /** 
+     * Decreases ship size and checks if ship will be sunk.
+     * If sunk, outputs message to user.
+     */
     private void decreaseShipSize() {
         if (!shipSunk) {
             if (currentShipSize == 1) {
@@ -70,7 +70,11 @@ public class Ship {
             }
         }
     }
-
+    /**
+     * Tries to take shot 
+     * @param pos index[0] for columns, [1] for rows
+     * @return boolean returns true if hit, false if miss
+     */
     public boolean takeShot(int[] pos) {
         // try to take a shot in the array
         if (!isHit(pos)) {
@@ -107,7 +111,11 @@ public class Ship {
     public int getY() {
         return y;
     }
-
+    /**
+     * 
+     * @param pos index[0] for columns, [1] for rows
+     * @return boolean Returns true if already hit
+     */
     private boolean isHit(int[] pos) {
         if (isHorizontal()) {
             return ship[0][pos[1]] == 'X';
@@ -115,7 +123,7 @@ public class Ship {
             return ship[pos[0]][0] == 'X';
         }
     }
-
+    
     public char getValueAt(int[] pos) {
         if (isHorizontal()) {
             return ship[0][pos[1]];
