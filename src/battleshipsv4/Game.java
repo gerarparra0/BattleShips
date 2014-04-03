@@ -174,12 +174,12 @@ public class Game {
                     if (result) {
                         dummy[pos[1]][pos[0]] = Ship.SHOT;
                         return true;
-                    } else {
+                    } else if (dummy[pos[1]][pos[0]] != Ship.SHOT){
                         dummy[pos[1]][pos[0]] = 'M';
 
                     }
                 } catch (ArrayIndexOutOfBoundsException e) {
-                    System.out.println("Invalid coordinate");
+                    System.out.println("Invalid coordinate.");
                     getCoordinatesAndShoot(sc);
                 }
             }
