@@ -12,28 +12,29 @@ import java.util.Scanner;
  */
 public class Game {
 
-    // create boards [2]
-    // main loop everything takes place,
-    // switch turns
-    // implement ai
-    // print messages
-    // handle errors
-    private boolean IS_PLAYERS_TURN = true;
-    // turn = true for player, false for AI
+    // who's turn is it?
+    private boolean IS_PLAYERS_TURN;
 
-    // ** not sure if we need this ** 
-    //private boolean turn = IS_PLAYERS_TURN;
+    // main objects of the game
     private Board AI;
     private Board Player;
-
     private AI COM;
+
+    // keep track of stuff
     private String playerName;
     private int playerTotalShots;
     private int AITotalShots;
-    private char[][] dummy;
-    private boolean playerZero = false;
-    private boolean AIZero = false;
 
+    // dummy board the player will see
+    private char[][] dummy;
+
+    // check for loosers
+    private boolean playerZero;
+    private boolean AIZero;
+
+    /**
+     * Creates and initializes all objects in board
+     */
     public Game() {
         AI = new Board(new int[]{8, 10});
         Player = new Board(new int[]{8, 10});
@@ -46,68 +47,99 @@ public class Game {
                 dummy[i][j] = Board.WATER;
             }
         }
+        
+        IS_PLAYERS_TURN = true;
 
+        playerZero = false;
+        AIZero = false;
     }
 
-    //calculates total shots required to win
-    public void setPlayerTotalShots() {
+    /**
+     * calculates total shots required to win for Player
+     */
+    private void setPlayerTotalShots() {
         for (int i = AI.getShipAmt(); i > 0; i--) {
             playerTotalShots += i;
         }
 
     }
 
-    public void setAIToalShots() {
+    /**
+     * calculates total shots required to win for AI
+     */
+    private void setAIToalShots() {
         for (int i = Player.getShipAmt(); i > 0; i--) {
             AITotalShots += i;
         }
     }
 
-    //will decrease and Flags will = true when total shots = 0
-    public void decreasePlayerTotalShots() {
-
+    /**
+     * decreases the amount of shots the player has left
+     */
+    private void decreasePlayerTotalShots() {
         --playerTotalShots;
     }
 
-    public int getPlayerTotalShots() {
+    /**
+     *
+     * @return int - amount of shots the player has
+     */
+    private int getPlayerTotalShots() {
         return playerTotalShots;
     }
 
-    public int getAITotalShots() {
+    /**
+     *
+     * @return int - amount of shots the AI has
+     */
+    private int getAITotalShots() {
         return AITotalShots;
     }
 
-    public void decreaseAITotalShots() {
-
+    /**
+     * decreases the amount of shots the AI has left
+     */
+    private void decreaseAITotalShots() {
         --AITotalShots;
     }
 
-    public boolean getAIZero() {
+    /**
+     * the AI has zero shots left
+     *
+     * @return true - AIZero
+     */
+    private boolean getAIZero() {
         return AIZero;
     }
 
-    public boolean getPlayerZero() {
+    /**
+     * the player has zero shots left
+     *
+     * @return true - AIZero
+     */
+    private boolean getPlayerZero() {
         return playerZero;
     }
 
-    public void printDummy() {
-        // print board
-        for (int r = 0; r < dummy.length; r++) {
-            for (int c = 0; c < dummy[0].length; c++) {
-                System.out.print(dummy[r][c] + " ");
+    /**
+     * print a dummy board to show the player instead of printing the actual
+     * AI's board
+     */
+    private void printDummy() {
+        for (char[] arr : dummy) {
+            for (char c : arr) {
+                System.out.print(c + " ");
             }
             System.out.println();
         }
-
     }
 
-//    private void nextTurn() {
-//        if (turn) {
-//            turn = IS_PLAYERS_TURN;
-//        } else {
-//            turn = ;
-//        }
-//    }
+    /**
+     * This method asks the user for his/her name
+     *
+     * @param sc - Current scanner to get values from user
+     *
+     */
     private void askForName(Scanner sc) {
         System.out.println("Enter your name");
         //String word = JOptionPane.showInputDialog("Enter your name");
@@ -117,6 +149,12 @@ public class Game {
         }
     }
 
+    /**
+     * Gets coordinates from the player to shoot at the AI
+     *
+     * @param sc - Current scanner to get values from user
+     * @return boolean - true if player hit, false otherwise
+     */
     private boolean getCoordinatesAndShoot(Scanner sc) {
         int x, y;
 
@@ -146,10 +184,16 @@ public class Game {
             }
         }
 
-        //String word = JOptionPane.showInputDialog("Enter a valid coordinate");
         return false;
     }
 
+    /**
+     * Asks the player if he/she likes given configuration of the board if so,
+     * keep it
+     *
+     * @param sc - Current scanner to get values from user
+     * @return Board - the board the player likes
+     */
     private Board keepBoard(Scanner sc) {
         Board actualBoard = null;
 
@@ -170,12 +214,18 @@ public class Game {
         return actualBoard;
     }
 
+    /**
+     * Draw the dummy board along with the player's board
+     */
     private void drawBoards() {
         printDummy();
         System.out.println("--------------------------------");
         Player.print();
     }
 
+    /**
+     * Main method of the Game class. All the game logic happens here
+     */
     public void run() {
 
         Scanner sc = new Scanner(System.in);
@@ -229,5 +279,4 @@ public class Game {
             System.out.println(getPlayerTotalShots());
         }
     }
-
 }
