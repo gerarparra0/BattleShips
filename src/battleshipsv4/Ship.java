@@ -49,16 +49,18 @@ public class Ship {
             }
         }
     }
+
     /**
-     * 
+     *
      * @return boolean Returns true if horizontal; false if vertical.
      */
     public boolean isHorizontal() {
         return direction == true;
     }
-    /** 
-     * Decreases ship size and checks if ship will be sunk.
-     * If sunk, outputs message to user.
+
+    /**
+     * Decreases ship size and checks if ship will be sunk. If sunk, outputs
+     * message to user.
      */
     private void decreaseShipSize() {
         if (!shipSunk) {
@@ -70,8 +72,10 @@ public class Ship {
             }
         }
     }
+
     /**
-     * Tries to take shot 
+     * Tries to take shot
+     *
      * @param pos index[0] for columns, [1] for rows
      * @return boolean returns true if hit, false if miss
      */
@@ -111,8 +115,9 @@ public class Ship {
     public int getY() {
         return y;
     }
+
     /**
-     * 
+     *
      * @param pos index[0] for columns, [1] for rows
      * @return boolean Returns true if already hit
      */
@@ -123,7 +128,7 @@ public class Ship {
             return ship[pos[0]][0] == 'X';
         }
     }
-    
+
     public char getValueAt(int[] pos) {
         if (isHorizontal()) {
             return ship[0][pos[1]];
