@@ -27,9 +27,7 @@ public class Game {
     private Board Player;
 
     private AI COM;
-    private Ship ships;
     private String playerName;
-    private boolean askedForName = false;
     private int playerTotalShots;
     private int AITotalShots;
     private char[][] dummy;
@@ -70,12 +68,12 @@ public class Game {
 
         --playerTotalShots;
     }
-    public int getPlayerTotalShots()
-    {
+
+    public int getPlayerTotalShots() {
         return playerTotalShots;
     }
-    public int getAITotalShots()
-    {
+
+    public int getAITotalShots() {
         return AITotalShots;
     }
 
@@ -139,7 +137,7 @@ public class Game {
                         return true;
                     } else {
                         dummy[pos[1]][pos[0]] = 'M';
-                        
+
                     }
                 } catch (ArrayIndexOutOfBoundsException e) {
                     System.out.println("Invalid coordinate");
@@ -198,7 +196,7 @@ public class Game {
                 if (t) {
                     System.out.println("You Hit the AI!");
                     decreaseAITotalShots();
-                    
+
                 } else {
                     System.out.println("You Missed.");
                 }
@@ -217,19 +215,18 @@ public class Game {
                 IS_PLAYERS_TURN = true;
             }
 
-           if(getAITotalShots()== 0)
-            {
+            if (getAITotalShots() == 0) {
                 drawBoards();
                 System.out.println("You've won!");
                 break;
-            } else if(getPlayerTotalShots() == 0)
-            {   drawBoards();
+            } else if (getPlayerTotalShots() == 0) {
+                drawBoards();
                 System.out.println("You've lost");
                 break;
-                
+
             }
-             System.out.println(getAITotalShots());
-             System.out.println(getPlayerTotalShots());
+            System.out.println(getAITotalShots());
+            System.out.println(getPlayerTotalShots());
         }
     }
 
