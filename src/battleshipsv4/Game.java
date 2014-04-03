@@ -205,7 +205,7 @@ public class Game {
 
                 IS_PLAYERS_TURN = false;
             } else {
-                boolean t = COM.easy(Player);
+                boolean t = COM.insane(Player);
                 if (t) {
                     System.out.println("AI hit your ship!");
                     decreasePlayerTotalShots();
