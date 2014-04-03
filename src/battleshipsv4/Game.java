@@ -157,12 +157,12 @@ public class Game {
         System.out.println("Enter the coordinates to shoot");
         //String word = JOptionPane.showInputDialog("Enter the coordinates to shoot");
 
-        if (sc.hasNext("exit")) {
+        if (sc.hasNext("exit") || sc.hasNext("Exit")) {
             EXIT = true;
             return false;
         }
 
-        if (sc.hasNextInt()) {
+        else if (sc.hasNextInt()) {
             x = sc.nextInt();
 
             if (sc.hasNextInt()) {
@@ -184,6 +184,9 @@ public class Game {
                 }
             }
         }
+        
+        else
+            sc.next();
 
         return false;
     }
