@@ -1,14 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package battleshipsv4;
 
-/**
- *
- * @author Gerardo
- */
 public class Ship {
 
     public static final boolean VERTICAL = false;
